@@ -25,10 +25,10 @@
 
 
 
-    {% if latest_questions %}
+    {% if latest_posts %}
         <ul>
-            {% for question in latest_questions %}
-                <li><a href="/listings/{{question.id}}/">{{question.question_text}}</a></li>
+            {% for posts in latest_posts %}
+                <li><a href="/listings/{{post.id}}/">{{posts.item_name}}</a></li>
             {% endfor %}
         </ul>
         {% else %}

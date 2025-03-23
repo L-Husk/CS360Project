@@ -21,3 +21,5 @@ urlpatterns = [
     path("listings/", include("listings.urls")),
     path('admin/', admin.site.urls),
 ]
+
+admin.site.site_url = '/listings/'

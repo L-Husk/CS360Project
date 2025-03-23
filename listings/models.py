@@ -13,3 +13,9 @@ class Ans(models.Model):
     votes = models.IntegerField(default=0)
     def __str__(self):
         return self.choice_text
+
+class Listing(models.Model):
+    item_name = models.CharField(max_length=100)
+    item_desc = models.CharField(max_length=500)
+    img_link = models.CharField(max_length=100)
+    

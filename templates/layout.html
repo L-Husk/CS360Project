@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+    <style>
+        body {
+        margin: 0px;
+        padding: 0px;
+        }
+        
+    </style>
+
+<head>
+
+</head>
+
+<body>
+    <div style="background-color: lightgray; width: 100%;">
+    <table style="margin-left: auto; margin-right: auto; width: 50%; text-align: center;">
+        <tr>
+            <td>
+                <a href="/admin/">Admin</a>
+            </td>
+            <td>
+                <a href="/listings/">Listings</a>
+            </td>
+            <td>
+                <a href="/users/register">Sign Up</a>
+            </td>
+            <td>
+                <a href="/users/login">Log In</a>
+            </td>
+        </tr>
+    </table>
+    </div>
+
+    
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>

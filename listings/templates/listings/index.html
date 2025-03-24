@@ -1,40 +1,13 @@
-<!DOCTYPE html>
-<html>
+{% extends 'layout.html' %}
 
-    <style>
-
-    </style>
-<head>
-
-</head>
-
-<body>
-    <div style="background-color: lightgray; width: 100%;">
-    <table style="margin-left: auto; margin-right: auto; width: 75%; text-align: center;">
-        <tr>
-            <td>
-                <a href="/admin/">Admin</a>
-            </td>
-            <td>
-                <a href="/listings/">Listings</a>
-            </td>
-        </tr>
-    </table>
-    </div>
-
-
-
-
+{% block content %}
     {% if latest_posts %}
-        <ul>
-            {% for posts in latest_posts %}
-                <li><a href="/listings/{{post.id}}/">{{posts.item_name}}</a></li>
-            {% endfor %}
-        </ul>
-        {% else %}
-            <p>No polls are available.</p>
-        {% endif %}
-
-
-</body>
-</html>
+    <ul>
+        {% for posts in latest_posts %}
+            <li><a href="/listings/{{post.id}}/">{{posts.item_name}}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>No polls are available.</p>
+    {% endif %}
+{% endblock %}

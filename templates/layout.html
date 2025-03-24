@@ -3,10 +3,14 @@
 
     <style>
         body {
-        margin: 0px;
-        padding: 0px;
-        background-color: black;
-        color: whitesmoke;
+            margin: 0px;
+            padding: 0px;
+            background-color: black;
+            color: whitesmoke;
+        }
+        a {
+            text-decoration: none;
+            color: whitesmoke;
         }
         
     </style>
@@ -16,7 +20,7 @@
 </head>
 
 <body>
-    <div style="background-color: lightgray; width: 100%;">
+    <div style="background-color:darkgoldenrod; width: 100%; padding: 25px;">
     <table style="margin-left: auto; margin-right: auto; width: 50%; text-align: center;">
         <tr>
             <td>
@@ -30,6 +34,9 @@
             </td>
             <td>
                 <a href="/users/login">Log In</a>
+            </td>
+            <td>
+                Logged in as {{ user.username }}
             </td>
         </tr>
     </table>

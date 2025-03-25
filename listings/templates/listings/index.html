@@ -5,6 +5,13 @@
     <ul>
         {% for posts in latest_posts %}
             <li><a href="/listings/{{post.id}}/">{{posts.item_name}}</a></li>
+            <section>
+                <img src="{{ posts.img.url }}"
+                alt = "{{ posts.item_name}}"
+                />
+                <p> {{ posts.item_name }} </p>
+
+            </section>
         {% endfor %}
     </ul>
     {% else %}

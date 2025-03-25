@@ -15,4 +15,7 @@ class Listing(models.Model):
     
 class Pending(models.Model):
     lid = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    u1 = models.IntegerField()
+    u1 = models.IntegerField(null=True, blank=True)
+    u2 = models.IntegerField(null=True, blank=True)
+    u3 = models.IntegerField(null=True, blank=True)
+    u4 = models.IntegerField(null=True, blank=True)

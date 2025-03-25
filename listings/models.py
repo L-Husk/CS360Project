@@ -12,3 +12,7 @@ class Listing(models.Model):
     user = models.ForeignKey(User, default=1, null=True,on_delete=models.SET_NULL)
     def __str__(self):
         return self.item_name
+    
+class Pending(models.Model):
+    lid = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    u1 = models.IntegerField()

@@ -10,4 +10,6 @@ class Listing(models.Model):
     pub_date = models.DateTimeField("date published")
     img = models.ImageField(default='default.jpg', blank=True)
     user = models.ForeignKey(User, default=1, null=True,on_delete=models.SET_NULL)
+    def __str__(self):
+        return self.item_name
 

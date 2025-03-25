@@ -10,3 +10,9 @@ def index(request):
     template = loader.get_template("listings/index.html")
     context = {"latest_posts": latest_posts}
     return HttpResponse(template.render(context, request))
+
+def user_listings(request):
+    user_posts = Listing.objects.filter(user_id=request.user)
+    template = loader.get_template("listings/mylistings.html")
+    context = {"user_posts": user_posts}
+    return HttpResponse(template.render(context, request))

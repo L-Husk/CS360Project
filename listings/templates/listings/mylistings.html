@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{%block content %}
+    {% if user_posts %}
+    {% for posts in user_posts %}
+    <!-- Add links to descriptor pages from each picture once they exist -->
+    <section>
+        <img src="{{ posts.img.url }}" alt = "{{ posts.item_name}}"/>
+        <p> {{ posts.item_name }} </p>
+    </section>
+    {% endfor %}
+    {% endif %}
+    <!-- Add pictures of pending trades -->
+{% endblock %}

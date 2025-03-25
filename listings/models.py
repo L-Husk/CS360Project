@@ -12,4 +12,3 @@ class Listing(models.Model):
     user = models.ForeignKey(User, default=1, null=True,on_delete=models.SET_NULL)
     def __str__(self):
         return self.item_name
-

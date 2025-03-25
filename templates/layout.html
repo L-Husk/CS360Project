@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>    
+    <title>{% block title %}{% endblock %}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
     <style>
         body {
             margin: 0px;
@@ -11,6 +15,9 @@
         a {
             text-decoration: none;
             color: whitesmoke;
+        }
+        a:hover {
+            color:black;
         }
         
     </style>

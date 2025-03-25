@@ -1,10 +1,11 @@
 {% extends 'layout.html' %}
 
 {%block content %}
-    {% if user_posts %}
-    <!-- Add links to descriptor pages from each picture once they exist -->
+<br>
+<a href="/listings/form">Add New Listing</a>
     <div class="container">
-        <div class="row align-items-end">
+      <div class="row align-items-end">
+    {% if user_posts %}
           {% for posts in user_posts %}
             <div class="col-4">
                 <a href="{{ posts.id }}/details">
@@ -13,12 +14,7 @@
                 <p> {{ posts.item_name }} </p>
             </div>
           {% endfor %}
-
     {% endif %}
-
-          <div class=" col-8">
-            <a href="/listings/form">Add New Listed</a>
-          </div>
   </div>
 </div>
     <!-- Add pictures of pending trades when they exist -->

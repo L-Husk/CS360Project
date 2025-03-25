@@ -1,10 +1,12 @@
 {% extends 'layout.html' %}
 
 {%block content %}
-<br>
-<a href="/listings/form">Add New Listing</a>
+
     <div class="container">
       <div class="row align-items-end">
+        <div class="col-4">
+          <h2><a href="/listings/form" style="color:darkgoldenrod;">Add New Listing</a><h2>
+        </div>
     {% if user_posts %}
           {% for posts in user_posts %}
             <div class="col-4">

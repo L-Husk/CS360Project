@@ -7,7 +7,7 @@ User = settings.AUTH_USER_MODEL
 class Listing(models.Model):
     item_name = models.CharField(max_length=100)
     item_desc = models.CharField(max_length=500)
-    pub_date = models.DateTimeField("date published")
+    pub_date = models.DateTimeField(auto_now_add = True)
     img = models.ImageField(default='default.jpg', blank=True)
     user = models.ForeignKey(User, default=1, null=True,on_delete=models.SET_NULL)
     def __str__(self):

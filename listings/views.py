@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from .models import Listing
+from .forms import UserForm
 
 
 # Create your views here.
@@ -22,3 +23,13 @@ def listing_details(request, pid):
     template = loader.get_template("listings/listingdetails.html")
     context = {"post" : post}
     return HttpResponse(template.render(context, request))
+
+def user_details(request):
+    form = UserForm(request.POST or None, request.FILES or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
+            form = UserForm()
+    return render(request, 'form.html', {'form': form})

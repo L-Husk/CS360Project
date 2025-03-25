@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{%block content %}
+    {% if post %}
+    <!-- Add links to descriptor pages from each picture once they exist -->
+    <div class="container">
+        <div class="row">
+            {% for p in post %}
+            <div class="col">
+                    <img src="{{ p.img.url }}" class= "card-img-bottom" alt = "{{ post.item_name}}"/>
+                    </div>
+            <div class="col" style="padding-top: 150pt;"> 
+                    <p>Title: {{ p.item_name }} </p>
+                    <p>Description: {{ p.item_desc }}</p>
+                    <p>Published Date {{ p.pub_date }}</p>
+
+                    </div>
+            </div>
+            {% endfor %}
+        
+    </div>
+    {% endif %}
+{% endblock %}
+

@@ -6,7 +6,9 @@
         <div class="row align-items-end">
         {% for posts in latest_posts %}
                 <div class="col-4">
-                <img src="{{ posts.img.url }}" class= "card-img-bottom" alt = "{{ posts.item_name}}"/>
+                    <a href="{{ posts.id }}/details">
+                        <img src="{{ posts.img.url }}" class= "card-img-bottom" alt = "{{ posts.item_name}}"/>
+                    </a>
                 <p> {{ posts.item_name }} </p>
             </div>
         {% endfor %}

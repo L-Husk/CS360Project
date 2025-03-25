@@ -16,3 +16,7 @@ def user_listings(request):
     template = loader.get_template("listings/mylistings.html")
     context = {"user_posts": user_posts}
     return HttpResponse(template.render(context, request))
+
+def listing_details(request, pid):
+    post = Listing.objects.filter(id=pid)
+    return HttpResponse(post)

@@ -32,4 +32,4 @@ def user_details(request):
             obj.user = request.user
             obj.save()
             form = UserForm()
-    return render(request, 'form.html', {'form': form})
+    return render(request, 'listings/form.html', {'form': form})

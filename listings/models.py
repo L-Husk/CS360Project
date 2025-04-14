@@ -14,7 +14,10 @@ class Listing(models.Model):
         return self.item_name
     
 class Pending(models.Model):
-    lid = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    lid = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='listed')
+    oid = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='offered')
+    lamount = models.IntegerField()
+    oamount = models.IntegerField()
     u1 = models.IntegerField(null=True, blank=True)
     u2 = models.IntegerField(null=True, blank=True)
     u3 = models.IntegerField(null=True, blank=True)

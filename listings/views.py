@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import Listing
 from .forms import UserForm
+from .forms import OfferForm
 
 
 # Create your views here.
@@ -20,8 +21,13 @@ def user_listings(request):
 
 def listing_details(request, pid):
     post = Listing.objects.filter(id=pid)
+    form = OfferForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            ''
     template = loader.get_template("listings/listingdetails.html")
-    context = {"post" : post}
+    context = {"post" : post,
+               "form" : form}
     return HttpResponse(template.render(context, request))
 
 def user_details(request):

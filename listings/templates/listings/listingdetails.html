@@ -2,11 +2,13 @@
 
 {%block content %}
 	{% if post %}
+	<br>
+	<br>
 	<!-- Add links to descriptor pages from each picture once they exist -->
-		<div class="container">
+		<div class="container" style="border: 2px solid white;">
 			<div class="row">
 			{% for p in post %}
-			<div class="col-4">
+			<div class="col-6">
 				<img src="{{ p.img.url }}" class= "card-img-bottom" alt = "{{ post.item_name}}"/>
 				</div>
 			<div class="col-6" style="padding-top: 150pt;"> 

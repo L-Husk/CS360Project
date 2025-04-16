@@ -7,3 +7,8 @@ listings/__pycache__/
 
 mysite/__pycache__/
 *.py[cod]
+
+media/
+*.jpg
+*.jpeg
+*.png

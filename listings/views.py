@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from django.db.models import Q
@@ -35,7 +35,7 @@ def listing_details(request, pid):
 			"form" : form}
 	return HttpResponse(template.render(context, request))
 
-def user_details(request):
+def listing_form(request):
 	form = UserForm(request.POST or None, request.FILES or None)
 	if request.method == 'POST':
 		if form.is_valid():

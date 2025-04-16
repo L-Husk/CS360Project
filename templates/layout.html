@@ -25,29 +25,51 @@
 
 <body>
     <div style="background-color:darkgoldenrod; width: 100%; padding: 25px;">
-    <table style="margin-left: auto; margin-right: auto; width: 50%; text-align: center;">
-        <tr>
-            <td>
-                <a href="/admin/">Admin</a>
-            </td>
-            <td>
-                <a href="/listings/">Listings</a>
-            </td>
-            <td>
-                <a href="/users/register">Sign Up</a>
-            </td>
-            <td>
-                <a href="/users/login">Log In</a>
-            </td>
-            <td>
-                Logged in as {{ user.username }}
-            </td>
-            <td>
-                <a href="/listings/mylistings">My Listings</a>
-            </td>
-        </tr>
-    </table>
-    </div>
+	{% if user.is_authenticated %}
+		<table style="margin-left: auto; margin-right: auto; width: 75%; text-align: center;">
+			<tr>
+				{% if user.is_superuser %}
+				<td>
+					<a href="/admin/">Admin</a>
+				</td>
+				{% endif %}
+				<td>
+					<a href="/listings/">Listings</a>
+				</td>
+				<td>
+					<a href="/users/register">Sign Up</a>
+				</td>
+				<td>
+					<a href="/users/login">Log In</a>
+				</td>
+				<td>
+					<a href="/users/logout">Log Out</a>
+				</td>
+				<td>
+					<a href="/listings/mylistings">My Listings</a>
+				</td>
+				<td>
+					<a href="/users/profile">Profile</a>
+				</td>
+				<td>
+					Logged in as {{ user.username }}
+				</td>
+			</tr>
+		</table>
+	{% else %}
+		<table style="margin-left: auto; margin-right: auto; width: 33%; text-align: center;">
+			<td>
+				<a href="/listings/">Listings</a>
+			</td>
+			<td>
+				<a href="/users/register">Sign Up</a>
+			</td>
+			<td>
+				<a href="/users/login">Log In</a>
+			</td>
+		</table>
+	{% endif %}
+	</div>
 
     
     {% block content %}

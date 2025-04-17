@@ -10,6 +10,12 @@
 		> First Name: {{ user.first_name}}
 		<br>
 		> Last Name: {{ user.last_name}}
+		<br>
+		{% if user.profile.partner %}
+		> Current Partner: {{user.profile.partner.username}}
+		{% else %}
+			Current Partner: No Current Partner
+		{% endif %}
 	</div>
 
 {% endblock %}

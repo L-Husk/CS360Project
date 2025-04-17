@@ -17,5 +17,19 @@
 		> Current Partner: No Current Partner
 		{% endif %}
 	</div>
-
+	<br>
+	<div class="container">
+		<h2> Request to add partner: </h2>
+		<form method="post">
+		{% csrf_token %}
+		{% for f in form %}
+		<div class="form-group">
+		{{ f.label_tag }}
+		{{ f }}
+		</div>
+		{% endfor %}
+		<br>
+		<button type="submit">Send request</button>
+		</form>
+	</div>
 {% endblock %}

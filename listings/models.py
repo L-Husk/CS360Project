@@ -48,6 +48,7 @@ def create_profile(sender, instance, created, **kwargs):
 post_save.connect(create_profile, sender=User)
 
 class PartnerRequest(models.Model):
-    email = models.EmailField(unique=True)
-    def __str__(self):
-        return self.email
+	email = models.EmailField(unique=True)
+	inputuser = models.IntegerField(null=True, blank=True)
+	def __str__(self):
+		return self.email

@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse
 from django.template import loader
-from .forms import UserForm
+from .forms import UserForm, SetPartnerForm
 
 # Create your views here.
 def registration_view(request):
@@ -43,8 +43,14 @@ def logout_view(request):
 
 def profile_details(request):
 	prof = request.user
+	form = SetPartnerForm(request.POST or None)
+	if request.method=='POST':
+		if form.is_valid():
+			obj = form.save(commit=False)
+			obj.inputuser=prof.id
+			obj.save()
 	if request.user.is_authenticated:
-		context = {}
+		context = {"form": form}
 		template = loader.get_template("users/profile.html")
 		return HttpResponse(template.render(context, request))
 		#make the actual page when done

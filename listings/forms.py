@@ -21,7 +21,3 @@ class PosterCounterOfferForm(forms.ModelForm):
 class OfferResponseForm(forms.Form):
     response = forms.ChoiceField(choices=[('option 1', 'Accept'), ('option 2', 'Reject')], widget=forms.RadioSelect)
 
-class SetPartnerForm(forms.ModelForm):
-    class Meta:
-        model = PartnerRequest
-        fields = ['email']

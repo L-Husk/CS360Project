@@ -26,6 +26,11 @@
           {% endfor %}
     {% endif %}
   </div>
+  <div class="row">
+	{% for p in pending %}
+		<p> {{ p }} </p>
+	{% endfor %}
+  </div>
 </div>
     <!-- Add pictures of pending trades when they exist -->
 {% endblock %}

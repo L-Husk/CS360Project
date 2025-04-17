@@ -17,23 +17,23 @@ def index(request):
 
 def user_listings(request):
 	user_posts = Listing.objects.filter(user_id=request.user)
+	offer = Pending.objects.filter(Q(u3=request.user.id) | Q(u4=request.user.profile.partner.id))
 	template = loader.get_template("listings/mylistings.html")
-	context = {"user_posts": user_posts}
+	context = {"user_posts": user_posts,
+			"pending": offer}
 	return HttpResponse(template.render(context, request))
 
 def listing_details(request, pid):
 	curr = request.user
-	post = Listing.objects.filter(id=pid)
+	post = Listing.objects.get(id=pid)
 	form = OfferForm(request.POST)
-	#offer = Pending.objects.filter(Q(u3=curr) | Q(u4=curr.profile.partner))
 	if request.method == 'POST':
 		if form.is_valid():
 			obj = form.save(commit=False)
 			obj.u3 = request.user.id
-			obj.u1 = Listing.user.get(id=pid)
-			obj.lid = Listing.objects.get(id=pid)
+			obj.u1 = post.user.id
+			obj.lid = post
 			obj.save()
-			
 	template = loader.get_template("listings/listingdetails.html")
 	context = {"post" : post,
 			"form" : form}

@@ -20,10 +20,15 @@ class Pending(models.Model):
 	oid = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='offered')
 	lamount = models.IntegerField()
 	oamount = models.IntegerField()
+	partner_receiving = models.CharField(max_length=50) #this selects whether the person who posted the item is receiving the offered item, or their partner
+	partner_sending = models.CharField(max_length=50) #this selects whether the person making an offer has the item, or their partner
 	u1 = models.IntegerField(null=True, blank=True) #poster
 	u2 = models.IntegerField(null=True, blank=True) #poster's partner
 	u3 = models.IntegerField(null=True, blank=True) #responder
 	u4 = models.IntegerField(null=True, blank=True) #responder's partner
+
+	def __str__(self):
+		return [self.u1.username, self.u3.username]
 	
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)

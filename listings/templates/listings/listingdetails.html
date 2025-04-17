@@ -7,14 +7,14 @@
 	<!-- Add links to descriptor pages from each picture once they exist -->
 		<div class="container" style="border: 2px solid white;">
 			<div class="row">
-			{% for p in post %}
+
 			<div class="col-6">
-				<img src="{{ p.img.url }}" class= "card-img-bottom" alt = "{{ post.item_name}}"/>
+				<img src="{{ post.img.url }}" class= "card-img-bottom" alt = "{{ post.item_name}}"/>
 				</div>
 			<div class="col-6" style="padding-top: 150pt;"> 
-				<p>Title: {{ p.item_name }} </p>
-				<p>Description: {{ p.item_desc }}</p>
-				<p>Published Date {{ p.pub_date }}</p>
+				<p>Title: {{ post.item_name }} </p>
+				<p>Description: {{ post.item_desc }}</p>
+				<p>Published Date {{ post.pub_date }}</p>
 				<script>
 					function show() {
 						document.getElementById('OfferForm').style.display = 'block';
@@ -23,21 +23,17 @@
 				<button onclick="show()"> Make an offer: </button>
 				<form method="post" id="OfferForm" style="display:none;">
 					{% csrf_token %}
-					<table style="width:100%;">
-					{{ form.as_p }}
-<!--					{% for f in form %}
-						{{ field.label_tag }}
-						{{ field }}
+					{% for f in form %}
+					<div class="form-group">
+						{{ f.label_tag }}
+						{{ f }}
 					{% endfor %}
--->
-					<label>Other content?</label>
-					<input type="text" id="receivinguser" value="otheruser">
-					</table>
+					</div>
 					<button type="submit" value="Submit"> Submit Offer </button>
 				</form>
 			</div>		
 			</div>
-			{% endfor %}
+
 		</div>
 	{% endif %}
 {% endblock %}

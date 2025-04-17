@@ -31,6 +31,7 @@ class Pending(models.Model):
 	u3 = models.IntegerField(null=True, blank=True) #responder
 	u4 = models.IntegerField(null=True, blank=True) #responder's partner
 	lastsent = models.IntegerField(default=1) # %%2=0 is the original party, %%2=1 is the party that responded. Anything > 1 is a counteroffer
+	accepted = models.BooleanField(default=False) #true denotes a finished offer
 
 	
 class Profile(models.Model):
@@ -52,3 +53,4 @@ class PartnerRequest(models.Model):
 	inputuser = models.IntegerField(null=True, blank=True)
 	def __str__(self):
 		return self.email
+	

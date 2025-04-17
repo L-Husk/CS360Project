@@ -14,7 +14,10 @@ def index(request):
 	return HttpResponse(template.render(context, request))
 
 def user_listings(request):
-	user_posts = Listing.objects.filter(user_id=request.user)
+	if request.user.profile.partner:
+		user_posts = Listing.objects.filter(Q(user_id=request.user) | Q(user_id = request.user.profile.partner))
+	else:	
+		user_posts = Listing.objects.filter(user_id=request.user)
 	offer = Pending.objects.filter(Q(u1=request.user.id) | Q(u2=request.user.id) | Q(u3=request.user.id) | Q(u4=request.user.id)).values_list('lid', flat=True)
 	user_pending = Listing.objects.filter(id__in=offer)
 	template = loader.get_template("listings/mylistings.html")
@@ -58,15 +61,21 @@ def offer_details(request, pid):
 	form2 = OfferForm(request.POST or None)
 	form3 = PosterCounterOfferForm(request.POST or None)
 	if request.method == 'POST':
-		if 'submit_response' in request.POST:
-			if form.is_valid(): #offer accepted or rejected
-				''
+		if 'submit_option' in request.POST:
+			#offer accepted or rejected
+			if request.POST.get('response') == 'option 1':
+				instance = offer
+				instance.accepted = True
+				instance.save()
+			if request.POST.get('response') == 'option 2':
+				instance = offer
+				instance.delete()
 		if 'submit_counter' in request.POST:
 			if form2.is_valid(): #counter offer
 				return redirect('/users/profile')
 		if 'submit_postcounter' in request.POST:
 			if form3.is_valid():
-				''
+				return redirect('/users/profile')
 
 	template = loader.get_template("listings/offerdetails.html")
 	context = {"post": post,

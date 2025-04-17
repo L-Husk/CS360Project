@@ -17,10 +17,11 @@ def index(request):
 
 def user_listings(request):
 	user_posts = Listing.objects.filter(user_id=request.user)
-	offer = Pending.objects.filter(Q(u3=request.user.id) | Q(u4=request.user.profile.partner.id))
+	offer = Pending.objects.filter(Q(u1=request.user.id) | Q(u2=request.user.id) | Q(u3=request.user.id) | Q(u4=request.user.id)).values_list('lid', flat=True)
+	user_pending = Listing.objects.filter(id__in=offer)
 	template = loader.get_template("listings/mylistings.html")
 	context = {"user_posts": user_posts,
-			"pending": offer}
+			"pending": user_pending}
 	return HttpResponse(template.render(context, request))
 
 def listing_details(request, pid):
@@ -48,3 +49,14 @@ def listing_form(request):
 			obj.save()
 			form = UserForm()
 	return render(request, 'listings/form.html', {'form': form})
+
+def offer_details(request, pid):
+	curr = request.user
+	post = Listing.objects.get(id=pid)
+	offer = Pending.objects.get(lid=pid)
+	otheritem = Listing.objects.filter(Q(user_id=offer.u3) | Q(user_id=offer.u4))
+	template = loader.get_template("listings/offerdetails.html")
+	context = {"post": post,
+			"offer": offer,
+			"offered_item": otheritem}
+	return HttpResponse(template.render(context, request))

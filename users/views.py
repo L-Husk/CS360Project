@@ -15,7 +15,8 @@ def registration_view(request):
 			password = form.cleaned_data['password1']
 			user = authenticate(username=username, password=password)
 			login(request, user)
-			return redirect("listings/")
+			if user.is_authenticated:
+				return redirect("/listings/")
 	#registering user
 	form = UserForm()
 	template = loader.get_template("users/register.html")

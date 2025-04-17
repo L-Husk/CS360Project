@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse
 from django.template import loader
 from .forms import UserForm
@@ -11,7 +11,11 @@ def registration_view(request):
 		form = UserForm(request.POST)
 		if form.is_valid():
 			form.save()
-			return redirect("/users/login")
+			username = form.cleaned_data['username']
+			password = form.cleaned_data['password1']
+			user = authenticate(username=username, password=password)
+			login(request, user)
+			return redirect("listings/")
 	#registering user
 	form = UserForm()
 	template = loader.get_template("users/register.html")
@@ -23,7 +27,9 @@ def login_view(request):
 		form = AuthenticationForm(data=request.POST)
 		if form.is_valid():
 			login(request, form.get_user())
-			return redirect("/listings")    
+			if request.user.is_superuser:
+				return redirect("/admin")
+			return redirect("/listings/")    
 	form = AuthenticationForm()
 	template = loader.get_template("users/login.html")
 	context = {"form": form}

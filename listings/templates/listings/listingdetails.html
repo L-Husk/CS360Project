@@ -25,10 +25,16 @@
 					{% csrf_token %}
 					<table style="width:100%;">
 					{{ form.as_p }}
+<!--					{% for f in form %}
+						{{ field.label_tag }}
+						{{ field }}
+					{% endfor %}
+-->
+					<label>Other content?</label>
+					<input type="text" id="receivinguser" value="otheruser">
 					</table>
 					<button type="submit" value="Submit"> Submit Offer </button>
 				</form>
-				
 			</div>		
 			</div>
 			{% endfor %}

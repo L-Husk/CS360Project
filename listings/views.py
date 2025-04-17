@@ -29,6 +29,10 @@ def listing_details(request, pid):
 	if request.method == 'POST':
 		if form.is_valid():
 			obj = form.save(commit=False)
+			obj.u3 = request.user.id
+			obj.u1 = Listing.user.get(id=pid)
+			obj.lid = Listing.objects.get(id=pid)
+			obj.save()
 			
 	template = loader.get_template("listings/listingdetails.html")
 	context = {"post" : post,

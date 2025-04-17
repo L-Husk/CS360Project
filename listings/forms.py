@@ -10,4 +10,4 @@ class UserForm(forms.ModelForm):
 class OfferForm(forms.ModelForm):
     class Meta:
         model = Pending
-        fields = ['lamount', 'oamount']
+        fields = ['oid', 'lamount', 'oamount']

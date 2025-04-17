@@ -5,36 +5,171 @@
 	<br>
 	<br>
 	<!-- Add links to descriptor pages from each picture once they exist -->
-		<div class="container" style="border: 2px solid white;">
-
+    <div class="container">
 		<div class="row">
-            <div class="col-4"> 
+            <div class="col-3"> 
                 <p>Title: {{ post.item_name }} </p>
                 <p>Description: {{ post.item_desc }}</p>
-                <p>Amount: {{ post.amount }}</p>
-                <p>Published Date {{ post.pub_date }}</p>
+                <p>Amount: {{ offer.lamount }} (of {{ post.amount }}) </p>
             </div>
-			<div class="col-4">
-				<img src="{{ post.img.url }}" class= "card-img-bottom" alt = "{{ post.item_name}}"/>
+			<div class="col-3">
+				<img src="{{ post.img.url }}" class= "card-img-bottom" alt = "{{ post.item_name}}" style="height: 230px;"/>
+            </div>   
+            {% if otheritem %}
+            <div class="col-3"> 
+                <p>Title: {{ otheritem.item_name }} </p>
+                <p>Description: {{ otheritem.item_desc }}</p>
+                <p>Amount: {{ offer.oamount }} (of {{ otheritem.amount}})</p>
             </div>
+			<div class="col-3">
+				<img src="{{ otheritem.img.url }}" class= "card-img-bottom" alt = "{{ otheritem.item_name}}" style="height: 230px;"/>
+            </div>
+            {% endif %}
         </div>
-        <div class="row">
-            {% for o in offered_item %}
-            <div class="col-4"> 
-                <p>Title: {{ o.item_name }} </p>
-                <p>Description: {{ o.item_desc }}</p>
-                <p>Amount: {{ o.amount }}</p>
-                <p>Published Date {{ o.pub_date }}</p>
+    {% endif %}
+    </div>
+    <br><br>
+    {% if offer %}
+    <div class="container">
+        <h5>
+        {% if offer.lastsent|divisibleby:2 %} <!-- If it is divisible by two, then the original party responded. Otherwise, the new party responded. -->
+            {% if curr.id == offer.u1 %}
+                Your party
+            {% elif curr.id == offer.u2 %}
+                Your party
+            {% elif curr.id == offer.u3 %}
+                The other party
+            {% elif curr.id == offer.u4 %}
+                The other party    
+            {% endif %}
+        {% else %}
+            {% if curr.id == offer.u1 %}
+                The other party
+            {% elif curr.id == offer.u2 %}
+                The other party
+            {% elif curr.id == offer.u3 %}
+                Your party
+            {% elif curr.id == offer.u4 %}
+                Your party    
+            {% endif %}
+        {% endif %}
+        has
+        {% if offer.lastsent > 1 %}
+            counteroffered
+        {% else %}
+            offered
+        {% endif %}
+        {{ offer.oamount }} of item {{ otheritem.item_name }} for {{ offer.lamount }} of item {{ post.item_name }}
+        </h5>
+    </div>
+    {% if offer.lastsent|divisibleby:2 %}
+        {% if curr.id == offer.u3 %}
+        <div class="container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }} 
+                <button type="submit", name="submit_option" value="option1">Submit</button>
+            </form>
+            <script>
+                function show() {
+                    document.getElementById('OfferForm').style.display = 'block';
+                }
+            </script>
+            <br>
+            <button onclick="show()"> Counter-offer: </button>
+            <form method="post" id="OfferForm" style="display:none;">
+                {% csrf_token %}
+                {% for f in form2 %}
+                <div class="form-group">
+                    {{ f.label_tag }}
+                    {{ f }}
+                {% endfor %}
+                </div>
+                <button type="submit" , name="submit_counter" value="Submit"> Submit Offer </button>
+            </form>
             </div>
-			<div class="col-4">
-				<img src="{{ o.img.url }}" class= "card-img-bottom" alt = "{{ o.item_name}}"/>
+        {% elif curr.id == offer.u4 %}
+        <div class="container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }} 
+                <button type="submit", name="submit_option" value="option1">Submit</button>
+            </form>
+            <script>
+                function show() {
+                    document.getElementById('OfferForm').style.display = 'block';
+                }
+            </script>
+            <br>
+            <button onclick="show()"> Counter-offer: </button>
+            <form method="post" id="OfferForm" style="display:none;">
+                {% csrf_token %}
+                {% for f in form2 %}
+                <div class="form-group">
+                    {{ f.label_tag }}
+                    {{ f }}
+                {% endfor %}
+                </div>
+                <button type="submit" , name="submit_counter" value="Submit"> Submit Offer </button>
+            </form>
             </div>
-            {% endfor %}
+        {% endif %}
+    {% else %}
+        {% if curr.id == offer.u1 %}
+        <div class="container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }} 
+                <button type="submit", name="submit_option" value="option1">Submit</button>
+            </form>
+            <script>
+                function show() {
+                    document.getElementById('OfferForm').style.display = 'block';
+                }
+            </script>
+            <br>
+            <button onclick="show()"> Counter-offer: </button>
+            <form method="post" id="OfferForm" style="display:none;">
+                {% csrf_token %}
+                {% for f in form3 %}
+                <div class="form-group">
+                    {{ f.label_tag }}
+                    {{ f }}
+                {% endfor %}
+                </div>
+                <button type="submit" , name="submit_postcounter" value="Submit"> Submit Offer </button>
+            </form>
+            </div>
+        {% elif curr.id == offer.u2 %}
+        <div class="container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }} 
+                <button type="submit", name="submit_option" value="option1">Submit</button>
+            </form>
+
+            <br>
+
+            <script>
+                function show() {
+                    document.getElementById('OfferForm').style.display = 'block';
+                }
+            </script>
+            <button onclick="show()"> Counter-offer: </button>
+            <form method="post" id="OfferForm" style="display:none;">
+                {% csrf_token %}
+                {% for f in form3 %}
+                <div class="form-group">
+                    {{ f.label_tag }}
+                    {{ f }}
+                {% endfor %}
+                </div>
+                <button type="submit" , name="submit_postcounter" value="Submit"> Submit Offer </button>
+            </form>
         </div>
-        </div>
+        {% endif %}
+    {% endif %}
 
     {% endif %}
-    {% if offer %}
-        
-    {% endif %}
+
 {% endblock %}

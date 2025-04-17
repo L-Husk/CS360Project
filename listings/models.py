@@ -21,13 +21,16 @@ class Pending(models.Model):
 	oid = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='offered')
 	lamount = models.IntegerField()
 	oamount = models.IntegerField()
-	partner_receiving = models.CharField(max_length=50) #this selects whether the person who posted the item is receiving the offered item, or their partner
-	partner_sending = models.CharField(max_length=50) #this selects whether the person making an offer has the item, or their partner
+	class sendchoice(models.TextChoices):
+		Myself = 'Myself'
+		My_Partner = 'My Partner'
+	partner_receiving = models.CharField(max_length=50, choices=sendchoice.choices) #this selects whether the person who posted the item is receiving the offered item, or their partner
+	partner_sending = models.CharField(max_length=50, choices=sendchoice.choices) #this selects whether the person making an offer has the item, or their partner
 	u1 = models.IntegerField(null=True, blank=True) #poster
 	u2 = models.IntegerField(null=True, blank=True) #poster's partner
 	u3 = models.IntegerField(null=True, blank=True) #responder
 	u4 = models.IntegerField(null=True, blank=True) #responder's partner
-	lastsent = models.IntegerField(default=1) #0 is the party that originally posted, 1 is the party that responded with an offer. Tracks who sent the last counteroffer
+	lastsent = models.IntegerField(default=1) # %%2=0 is the original party, %%2=1 is the party that responded. Anything > 1 is a counteroffer
 
 	
 class Profile(models.Model):

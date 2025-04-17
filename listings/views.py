@@ -2,10 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from django.db.models import Q
-from .models import Listing
-from .models import Pending
-from .forms import UserForm
-from .forms import OfferForm
+from .models import Listing, Pending
+from .forms import UserForm, OfferForm, OfferResponseForm, PosterCounterOfferForm
 
 
 # Create your views here.
@@ -54,9 +52,26 @@ def offer_details(request, pid):
 	curr = request.user
 	post = Listing.objects.get(id=pid)
 	offer = Pending.objects.get(lid=pid)
-	otheritem = Listing.objects.filter(Q(user_id=offer.u3) | Q(user_id=offer.u4))
+	otheritem = Listing.objects.get(id=offer.oid.id)
+	form = OfferResponseForm(request.POST or None)
+	form2 = OfferForm(request.POST or None)
+	form3 = PosterCounterOfferForm(request.POST or None)
+	if request.method == 'POST':
+		if 'submit_response' in request.POST:
+			if form.is_valid(): #offer accepted or rejected
+				''
+		if 'submit_counter' in request.POST:
+			if form2.is_valid(): #counter offer
+				return redirect('/users/profile')
+		if 'submit_postcounter' in request.POST:
+			if form3.is_valid():
+				''
 	template = loader.get_template("listings/offerdetails.html")
 	context = {"post": post,
 			"offer": offer,
-			"offered_item": otheritem}
+			"otheritem": otheritem,
+			"curr": curr,
+			"form": form,
+			"form2": form2,
+			"form3": form3}
 	return HttpResponse(template.render(context, request))

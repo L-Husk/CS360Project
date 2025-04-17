@@ -53,6 +53,7 @@ def offer_details(request, pid):
 	post = Listing.objects.get(id=pid)
 	offer = Pending.objects.get(lid=pid)
 	otheritem = Listing.objects.get(id=offer.oid.id)
+<<<<<<< Updated upstream
 	form = OfferResponseForm(request.POST or None)
 	form2 = OfferForm(request.POST or None)
 	form3 = PosterCounterOfferForm(request.POST or None)
@@ -66,12 +67,17 @@ def offer_details(request, pid):
 		if 'submit_postcounter' in request.POST:
 			if form3.is_valid():
 				''
+=======
+>>>>>>> Stashed changes
 	template = loader.get_template("listings/offerdetails.html")
 	context = {"post": post,
 			"offer": offer,
 			"otheritem": otheritem,
+<<<<<<< Updated upstream
 			"curr": curr,
 			"form": form,
 			"form2": form2,
 			"form3": form3}
+=======
+>>>>>>> Stashed changes
 	return HttpResponse(template.render(context, request))

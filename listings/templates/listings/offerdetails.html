@@ -26,6 +26,7 @@
             </div>
             {% endif %}
         </div>
+<<<<<<< Updated upstream
     {% endif %}
     </div>
     <br><br>
@@ -172,4 +173,43 @@
 
     {% endif %}
 
+=======
+    {% endif %}
+    </div>
+    <br><br>
+    {% if offer %}
+    <div class="container">
+        <h5>
+        {% if offer.lastsent|divisibleby:2 %} <!-- If it is divisible by two, then the original party responded. Otherwise, the new party responded. -->
+            {% if curr.id == offer.u1 %}
+                Your party
+            {% elif curr.id == offer.u2 %}
+                Your party
+            {% elif curr.id == offer.u3 %}
+                The other party
+            {% elif curr.id == offer.u4 %}
+                The other party    
+            {% endif %}
+        {% else %}
+            {% if curr.id == offer.u1 %}
+                The other party
+            {% elif curr.id == offer.u2 %}
+                The other party
+            {% elif curr.id == offer.u3 %}
+                Your party
+            {% elif curr.id == offer.u4 %}
+                Your party    
+            {% endif %}
+        {% endif %}
+        has
+        {% if offer.lastsent > 1 %}
+            counteroffered
+        {% else %}
+            offered
+        {% endif %}
+        {{ offer.oamount }} of item {{ otheritem.item_name }} for {{ offer.lamount }} of item {{ post.item_name }}
+        </h5>
+    </div>
+    {% endif %}
+>>>>>>> Stashed changes
 {% endblock %}

@@ -4,6 +4,8 @@ from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse
 from django.template import loader
 from .forms import UserForm, SetPartnerForm
+from django.contrib.auth.models import User
+from listings.models import Profile
 
 # Create your views here.
 def registration_view(request):
@@ -48,7 +50,14 @@ def profile_details(request):
 		if form.is_valid():
 			obj = form.save(commit=False)
 			obj.inputuser=prof.id
+			#none of this fucking does anything
+			partner = User.objects.filter(email='user7@email.com')
+			if partner:
+				return redirect("/listings/")
+			else:
+				return redirect('/listings/mylistings')
 			obj.save()
+
 	if request.user.is_authenticated:
 		context = {"form": form}
 		template = loader.get_template("users/profile.html")

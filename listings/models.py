@@ -48,8 +48,8 @@ def create_profile(sender, instance, created, **kwargs):
 #adds a profile for each new user
 post_save.connect(create_profile, sender=User)
 
-class PartnerRequest(models.Model): #this is the one to use!!
-	email = models.EmailField(unique=True)
+class PartnerRequest(models.Model):
+	email = models.EmailField()
 	inputuser = models.IntegerField(blank=True, null=True)
 	def __str__(self):
 		return self.email

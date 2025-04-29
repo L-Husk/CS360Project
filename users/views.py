@@ -54,12 +54,13 @@ def profile_details(request):
 			partner = User.objects.filter(email=obj.email)
 			if partner:
 				p = User.objects.get(email=obj.email)
-				preq = PartnerRequest.objects.filter(inputuser=5)
+				preq = PartnerRequest.objects.filter(inputuser=p.id)
 				if preq: #buncha if-else statements that do nothing
 					#currently, preq returns none even if it shouldn't
 					return redirect("/listings/")
 				else:
-					return redirect("/listings/mylistings")
+					''
+					#return redirect("/listings/mylistings")
 			
 
 	if request.user.is_authenticated:

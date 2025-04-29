@@ -16,6 +16,9 @@
 		> Current Partner: {{user.profile.partner.username}}
 		{% else %}
 		> Current Partner: No Current Partner
+		{% if pend %}
+		(Pending: {{pend.email}})
+		{% endif %}
 		{% endif %}
 	</div>
 	<br>

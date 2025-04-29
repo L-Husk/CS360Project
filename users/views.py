@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .forms import UserForm, SetPartnerForm
 from django.contrib.auth.models import User
-from listings.models import Profile, PartnerRequest
+from listings.models import PartnerRequest
 
 # Create your views here.
 def registration_view(request):
@@ -63,7 +63,13 @@ def profile_details(request):
 			
 
 	if request.user.is_authenticated:
-		context = {"form": form}
+		curr = request.user
+		pend = PartnerRequest.objects.all()#filter(inputuser=curr.id)
+		if pend:
+			#pend = PartnerRequest.objects.get(inputuser=curr.id)
+			pend = None
+		context = {"form": form,
+			 "pend": pend}
 		template = loader.get_template("users/profile.html")
 		return HttpResponse(template.render(context, request))
 		#make the actual page when done

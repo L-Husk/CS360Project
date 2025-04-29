@@ -1,11 +1,12 @@
 from django.contrib import admin
-from .models import Listing, Profile, Pending
+from .models import Listing, Profile, Pending, PartnerRequest
 from django.contrib.auth.models import User
 # Register your models here.
 
 admin.site.register(Listing)
 admin.site.register(Profile)
 admin.site.register(Pending)
+admin.site.register(PartnerRequest)
 
 class ProfileInline(admin.StackedInline):
 	model = Profile

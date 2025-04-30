@@ -86,3 +86,8 @@ def offer_details(request, pid):
 			"form2": form2,
 			"form3": form3}
 	return HttpResponse(template.render(context, request))
+
+def test(request, teststr):
+	template = loader.get_template("listings/test.html")
+	context = {"teststr":teststr}
+	return HttpResponse(template.render(context,request))

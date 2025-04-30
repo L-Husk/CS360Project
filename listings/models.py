@@ -53,3 +53,4 @@ class PartnerRequest(models.Model):
 	inputuser = models.IntegerField(blank=True, null=True)
 	def __str__(self):
 		return self.email
+	

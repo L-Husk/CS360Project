@@ -22,6 +22,23 @@
 		{% endif %}
 	</div>
 	<br>
+	{% if user.profile.partner %}
+	<br><br><br>
+	<div class="container">
+		<h2> Request to remove partner: </h2>
+		<form method="post">
+			{% csrf_token %}
+			<p>Enter your username to verify if you are sure:</p>
+			{% for f in removeform %}
+			<div class="form-group">
+				{{ f }}
+			</div>
+			{% endfor %}
+			<br>
+			<button type="submit" name="submit_remove">Remove Partner</button>
+		</form>
+	</div>
+	{% else %}
 	<div class="container">
 		<h2> Request to add partner: </h2>
 		<form method="post">
@@ -33,7 +50,8 @@
 		</div>
 		{% endfor %}
 		<br>
-		<button type="submit">Send request</button>
+		<button type="submit" name="submit_add">Send request</button>
 		</form>
 	</div>
+	{% endif %}
 {% endblock %}

@@ -3,9 +3,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse
 from django.template import loader
-from .forms import UserForm, SetPartnerForm
+from .forms import UserForm, SetPartnerForm, RemovePartnerForm
 from django.contrib.auth.models import User
-from listings.models import PartnerRequest
+from listings.models import PartnerRequest, Profile
 
 # Create your views here.
 def registration_view(request):
@@ -46,30 +46,55 @@ def logout_view(request):
 def profile_details(request):
 	prof = request.user
 	form = SetPartnerForm(request.POST or None)
+	removeform = RemovePartnerForm(request.POST or None)
 	if request.method=='POST':
-		if form.is_valid():
+		if 'submit_add' in request.POST and form.is_valid():
 			obj = form.save(commit=False)
-			obj.inputuser=prof.id
-			obj.save()
+			if PartnerRequest.objects.filter(inputuser=prof.id):
+				req = PartnerRequest.objects.get(inputuser=prof.id)
+				req.email=obj.email
+				if prof.email!=obj.email:
+					req.save()
+			else:
+				obj.inputuser=prof.id
+				if prof.email!=obj.email:
+					obj.save()
 			partner = User.objects.filter(email=obj.email)
 			if partner:
 				p = User.objects.get(email=obj.email)
 				preq = PartnerRequest.objects.filter(inputuser=p.id)
-				if preq: #buncha if-else statements that do nothing
-					#currently, preq returns none even if it shouldn't
-					return redirect("/listings/")
-				else:
-					''
-					#return redirect("/listings/mylistings")
-			
+				if preq: #checks if the user they requested has made a partner request
+					preq = PartnerRequest.objects.get(inputuser=p.id)
+					if preq.email==prof.email:
+						thispartner = Profile.objects.get(user_id=prof.id)
+						thatpartner = Profile.objects.get(user_id=p.id)
+						thispartner.partner_id=p.id
+						thatpartner.partner_id=prof.id
+						thispartner.save()
+						thatpartner.save()
+						thisreq = PartnerRequest.objects.get(inputuser=prof.id)
+						thatreq = PartnerRequest.objects.get(inputuser=p.id)
+						thisreq.delete()
+						thatreq.delete()
+		if 'submit_remove' in request.POST and removeform.is_valid():
+			curr = request.user
+			rmreq = removeform.cleaned_data['name']
+			if rmreq==curr.username:
+				thisprofile = Profile.objects.get(user_id=curr.id)
+				thatprofile = Profile.objects.get(user_id=thisprofile.partner_id)
+				thisprofile.partner_id = None
+				thatprofile.partner_id = None
+				thisprofile.save()
+				thatprofile.save()
+
 
 	if request.user.is_authenticated:
 		curr = request.user
-		pend = PartnerRequest.objects.all()#filter(inputuser=curr.id)
+		pend = PartnerRequest.objects.filter(inputuser=curr.id)
 		if pend:
-			#pend = PartnerRequest.objects.get(inputuser=curr.id)
-			pend = None
+			pend = PartnerRequest.objects.get(inputuser=curr.id)
 		context = {"form": form,
+			 "removeform": removeform,
 			 "pend": pend}
 		template = loader.get_template("users/profile.html")
 		return HttpResponse(template.render(context, request))

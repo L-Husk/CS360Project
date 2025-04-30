@@ -12,15 +12,15 @@ class Listing(models.Model):
 	pub_date = models.DateTimeField(auto_now_add = True)
 	img = models.ImageField(default='default.jpg', blank=True)
 	user = models.ForeignKey(User, default=1, null=True,on_delete=models.CASCADE)
-	amount = models.IntegerField()
+	amount = models.DecimalField(max_digits=20, decimal_places=3)
 	def __str__(self):
 		return self.item_name
 	
 class Pending(models.Model):
 	lid = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='listed')
 	oid = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='offered')
-	lamount = models.IntegerField()
-	oamount = models.IntegerField()
+	lamount = models.DecimalField(max_digits=20, decimal_places=3)
+	oamount = models.DecimalField(max_digits=20, decimal_places=3)
 	class sendchoice(models.TextChoices):
 		Myself = 'Myself'
 		My_Partner = 'My Partner'
@@ -36,8 +36,8 @@ class Pending(models.Model):
 class Accepted(models.Model):
 	lid = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='accepted_listed')
 	oid = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='accepted_offered')
-	lamount = models.IntegerField()
-	oamount = models.IntegerField()
+	lamount = models.DecimalField(max_digits=20, decimal_places=3)
+	oamount = models.DecimalField(max_digits=20, decimal_places=3)
 	class sendchoice(models.TextChoices):
 		Myself = 'Myself'
 		My_Partner = 'My Partner'
@@ -48,6 +48,7 @@ class Accepted(models.Model):
 	u3 = models.IntegerField(null=True, blank=True) #responder
 	u4 = models.IntegerField(null=True, blank=True)
 	completed_at = models.DateTimeField(auto_now_add=True)
+
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	partner = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='partner')

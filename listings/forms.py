@@ -11,7 +11,7 @@ class UserForm(forms.ModelForm):
 class OfferForm(forms.ModelForm):
     class Meta:
         model = Pending
-        fields = ['oid', 'lamount', 'oamount', 'postpartner_receiving']
+        fields = ['oid', 'lamount', 'oamount', 'offerpartner_receiving']
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)

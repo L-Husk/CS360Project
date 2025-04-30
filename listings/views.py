@@ -105,7 +105,17 @@ def offer_details(request, pid, oid):
 		if 'submit_counter' in request.POST:
 			if form2.is_valid():
 				counter = form2.save(commit=False)
-
+				if offer.lastsent%2: #if post party is counteroffering
+					offer.postpartner_receiving=counter.offerpartner_receiving
+					offer.lid=counter.oid
+				else: #if other party is counteroffering
+					offer.offerpartner_receiving=counter.offerpartner_receiving
+					offer.oid=counter.oid
+				offer.lamount=counter.lamount
+				offer.oamount=counter.oamount
+				offer.lastsent = offer.lastsent+1
+				offer.save()
+				return redirect("".join(["/listings/",str(offer.lid.id),"/",str(offer.oid.id),"/offer"]))
 
 	template = loader.get_template("listings/offerdetails.html")
 	context = {"post": post,

@@ -18,11 +18,10 @@ def user_listings(request):
 		user_posts = Listing.objects.filter(Q(user_id=request.user) | Q(user_id = request.user.profile.partner))
 	else:	
 		user_posts = Listing.objects.filter(user_id=request.user)
-	offer = Pending.objects.filter(Q(u1=request.user.id) | Q(u2=request.user.id) | Q(u3=request.user.id) | Q(u4=request.user.id)).values_list('lid', flat=True)
-	user_pending = Listing.objects.filter(id__in=offer)
+	offer = Pending.objects.filter(Q(u1=request.user.id) | Q(u2=request.user.id) | Q(u3=request.user.id) | Q(u4=request.user.id))
 	template = loader.get_template("listings/mylistings.html")
 	context = {"user_posts": user_posts,
-			"pending": user_pending}
+			"pending": offer}
 	return HttpResponse(template.render(context, request))
 
 def listing_details(request, pid):
@@ -64,11 +63,11 @@ def listing_form(request):
 			form = UserForm()
 	return render(request, 'listings/form.html', {'form': form})
 
-def offer_details(request, pid):
+def offer_details(request, pid, oid):
 	curr = request.user
 	post = Listing.objects.get(id=pid)
-	offer = Pending.objects.get(lid=pid)
-	otheritem = Listing.objects.get(id=offer.oid.id)
+	otheritem = Listing.objects.get(id=oid)
+	offer = Pending.objects.get(lid=pid, oid=oid)
 
 	form = OfferResponseForm(request.POST or None)
 	form2 = OfferForm(request.POST or None)

@@ -32,6 +32,7 @@
     <br><br>
     {% if offer %}
     <div class="container">
+		{{offer.id}}
         <h5>
         {% if offer.lastsent|divisibleby:2 %} <!-- If it is divisible by two, then the original party responded. Otherwise, the new party responded. -->
             {% if curr.id == offer.u1 %}
@@ -60,7 +61,7 @@
         {% else %}
             offered
         {% endif %}
-        {{ offer.oamount }} of item {{ otheritem.item_name }} for {{ offer.lamount }} of item {{ post.item_name }}
+        {{ offer.oamount }} of item {{ offer.oid.item_name }} for {{ offer.lamount }} of item {{ offer.lid.item_name }}
         </h5>
     </div>
     {% if offer.lastsent|divisibleby:2 %}

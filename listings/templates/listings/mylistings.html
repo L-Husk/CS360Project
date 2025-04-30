@@ -41,6 +41,26 @@
       </div>
     </div>
 	{% endfor %}
+  <br>
+
+  <h2><a style="font-weight:bold;">Accepted Trades</a></h2>
+  <div class="row">
+    {% for a in accepted %}
+      <div class="col-4 mb-4">
+        <div class="border p-3 d-flex flex-column h-100">
+          <a href="{{ a.lid.id }}/{{ a.oid.id }}/accepted" class="flex-grow-1">
+            <div class="image-container d-flex justify-content-center" style="height: 200px; background-color: white; overflow: hidden;">
+              <img src="{{ a.lid.img.url }}" class="card-img-bottom" alt="{{ a.lid.item_name }}" style="max-width: 100%; height: 100%; object-fit: contain;" />
+            </div>
+          </a>
+          <p class="text-center mt-2 mb-0">{{ a.lid.item_name }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>  
+
+
+
   </div>
 </div>
 {% endblock %}

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from django.db.models import Q
-from .models import Listing, Pending
+from .models import Listing, Pending, Accepted
 from .forms import UserForm, OfferForm, OfferResponseForm, PosterCounterOfferForm
 
 
@@ -19,9 +19,11 @@ def user_listings(request):
 	else:	
 		user_posts = Listing.objects.filter(user_id=request.user)
 	offer = Pending.objects.filter(Q(u1=request.user.id) | Q(u2=request.user.id) | Q(u3=request.user.id) | Q(u4=request.user.id))
+	accepted = Accepted.objects.filter(Q(u1=request.user.id) | Q(u2=request.user.id) | Q(u3=request.user.id) | Q(u4=request.user.id))
 	template = loader.get_template("listings/mylistings.html")
 	context = {"user_posts": user_posts,
-			"pending": offer}
+			"pending": offer,
+			"accepted": accepted}
 	return HttpResponse(template.render(context, request))
 
 def listing_details(request, pid):
@@ -42,7 +44,8 @@ def listing_details(request, pid):
 				obj.u3 = curr.id
 				obj.u1 = post.user.id
 				obj.lid = post
-				obj.u4 = partner.id
+				if partner:
+					obj.u4 = partner.id
 				if post.user.profile.partner:
 					obj.u2 = post.user.profile.partner.id
 				obj.save()
@@ -79,14 +82,24 @@ def offer_details(request, pid, oid):
 		if 'submit_option' in request.POST:
 			#offer accepted or rejected
 			if request.POST.get('response') == 'option 1':
-				instance = offer
-				instance.accepted = True
-				instance.save()
-			if request.POST.get('response') == 'option 2':
-				instance = offer
-				instance.delete()
+				Accepted.objects.create(
+					lid=offer.lid,
+					oid=offer.oid,
+					lamount=offer.lamount,
+					oamount=offer.oamount,
+					partner_receiving=offer.partner_receiving,
+					partner_sending=offer.partner_sending,
+					u1=offer.u1,
+					u2=offer.u2,
+					u3=offer.u3,
+					u4=offer.u4,
+				)
+				offer.delete()
+			# Offer rejected
+			elif request.POST.get('response') == 'option 2':
+				offer.delete()
 		if 'submit_counter' in request.POST:
-			if form2.is_valid(): #counter offer
+			if form2.is_valid():
 				return redirect('/users/profile')
 		if 'submit_postcounter' in request.POST:
 			if form3.is_valid():
@@ -101,6 +114,19 @@ def offer_details(request, pid, oid):
 			"form2": form2,
 			"form3": form3}
 	return HttpResponse(template.render(context, request))
+
+def accepted_details(request, pid, oid):
+    post = Listing.objects.get(id=pid)
+    otheritem = Listing.objects.get(id=oid)
+    trade = Accepted.objects.get(lid=pid, oid=oid)
+
+    template = loader.get_template("listings/accepteddetails.html")
+    context = {
+        "post": post,
+        "otheritem": otheritem,
+        "trade": trade,
+    }
+    return HttpResponse(template.render(context, request))
 
 def test(request, teststr):
 	template = loader.get_template("listings/test.html")

@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <h2 class="mb-4">Accepted Trade Details</h2>
+
+  <div class="row">
+    <div class="col-md-6 mb-4 text-center">
+      <h5 class="mb-2">You're Receiving</h5>
+      <img src="{{ trade.lid.img.url }}" alt="{{ trade.lid.item_name }}" style="max-height: 180px; object-fit: contain;">
+      <p class="mt-2"><strong>{{ trade.lid.item_name }}</strong><br>Quantity: {{ trade.lamount }}</p>
+    </div>
+
+    <div class="col-md-6 mb-4 text-center">
+      <h5 class="mb-2">You're Giving</h5>
+      <img src="{{ trade.oid.img.url }}" alt="{{ trade.oid.item_name }}" style="max-height: 180px; object-fit: contain;">
+      <p class="mt-2"><strong>{{ trade.oid.item_name }}</strong><br>Quantity: {{ trade.oamount }}</p>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <p><strong>Trade Completed On:</strong> {{ trade.completed_at|date:"F j, Y, g:i a" }}</p>
+  </div>
+{% endblock %}

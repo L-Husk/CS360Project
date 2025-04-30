@@ -42,6 +42,9 @@ def listing_details(request, pid):
 				obj.u3 = curr.id
 				obj.u1 = post.user.id
 				obj.lid = post
+				obj.u4 = partner.id
+				if post.user.profile.partner:
+					obj.u2 = post.user.profile.partner.id
 				obj.save()
 		else:
 			form = OfferForm(user=curr, partner=partner)

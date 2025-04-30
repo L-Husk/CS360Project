@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.db.models import Q
 from .models import Listing, Pending, Accepted
-from .forms import UserForm, OfferForm, OfferResponseForm, PosterCounterOfferForm
+from .forms import UserForm, OfferForm, OfferResponseForm
 
 
 # Create your views here.
@@ -77,18 +77,21 @@ def offer_details(request, pid, oid):
 
 	form = OfferResponseForm(request.POST or None)
 	form2 = OfferForm(request.POST or None)
-	form3 = PosterCounterOfferForm(request.POST or None)
 	if request.method == 'POST':
 		if 'submit_option' in request.POST:
 			#offer accepted or rejected
 			if request.POST.get('response') == 'option 1':
+				if request.user.id == offer.u1 or request.user.id == offer.u2:
+					offer.postpartner_receiving=request.POST.get('partner_receiving')
+				if request.user.id == offer.u3 or request.user.id == offer.u4:
+					offer.offerpartner_receiving=request.POST.get('partner_receiving')
 				Accepted.objects.create(
 					lid=offer.lid,
 					oid=offer.oid,
 					lamount=offer.lamount,
 					oamount=offer.oamount,
-					partner_receiving=offer.partner_receiving,
-					partner_sending=offer.partner_sending,
+					postpartner_receiving=offer.postpartner_receiving,
+					offerpartner_receiving=offer.offerpartner_receiving,
 					u1=offer.u1,
 					u2=offer.u2,
 					u3=offer.u3,
@@ -98,9 +101,11 @@ def offer_details(request, pid, oid):
 			# Offer rejected
 			elif request.POST.get('response') == 'option 2':
 				offer.delete()
+			return redirect("/listings/mylistings")
 		if 'submit_counter' in request.POST:
 			if form2.is_valid():
-				return redirect('/users/profile')
+				counter = form2.save(commit=False)
+
 
 	template = loader.get_template("listings/offerdetails.html")
 	context = {"post": post,
@@ -108,8 +113,7 @@ def offer_details(request, pid, oid):
 			"otheritem": otheritem,
 			"curr": curr,
 			"form": form,
-			"form2": form2,
-			"form3": form3}
+			"form2": form2}
 	return HttpResponse(template.render(context, request))
 
 def accepted_details(request, pid, oid):

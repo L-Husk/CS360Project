@@ -24,8 +24,8 @@ class Pending(models.Model):
 	class sendchoice(models.TextChoices):
 		Myself = 'Myself'
 		My_Partner = 'My Partner'
-	partner_receiving = models.CharField(max_length=50, choices=sendchoice.choices) #this selects whether the person who posted the item is receiving the offered item, or their partner
-	partner_sending = models.CharField(max_length=50, choices=sendchoice.choices) #this selects whether the person making an offer has the item, or their partner
+	postpartner_receiving = models.CharField(max_length=50, choices=sendchoice.choices) #this selects whether the person who posted the item is receiving the offered item, or their partner
+	offerpartner_receiving = models.CharField(max_length=50, choices=sendchoice.choices) #this selects whether the person making an offer has the item, or their partner
 	u1 = models.IntegerField(null=True, blank=True) #poster
 	u2 = models.IntegerField(null=True, blank=True) #poster's partner
 	u3 = models.IntegerField(null=True, blank=True) #responder
@@ -41,8 +41,8 @@ class Accepted(models.Model):
 	class sendchoice(models.TextChoices):
 		Myself = 'Myself'
 		My_Partner = 'My Partner'
-	partner_receiving = models.CharField(max_length=50, choices=sendchoice.choices) #this selects whether the person who posted the item is receiving the offered item, or their partner
-	partner_sending = models.CharField(max_length=50, choices=sendchoice.choices) #this selects whether the person making an offer has the item, or their partner
+	postpartner_receiving = models.CharField(max_length=50, choices=sendchoice.choices) #this selects whether the person who posted the item is receiving the offered item, or their partner
+	offerpartner_receiving = models.CharField(max_length=50, choices=sendchoice.choices) #this selects whether the person making an offer has the item, or their partner
 	u1 = models.IntegerField(null=True, blank=True) #poster
 	u2 = models.IntegerField(null=True, blank=True) #poster's partner
 	u3 = models.IntegerField(null=True, blank=True) #responder

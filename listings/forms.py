@@ -11,7 +11,7 @@ class UserForm(forms.ModelForm):
 class OfferForm(forms.ModelForm):
     class Meta:
         model = Pending
-        fields = ['oid', 'lamount', 'oamount', 'partner_sending']
+        fields = ['oid', 'lamount', 'oamount', 'postpartner_receiving']
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
@@ -26,4 +26,8 @@ class OfferForm(forms.ModelForm):
 
 class OfferResponseForm(forms.Form):
     response = forms.ChoiceField(choices=[('option 1', 'Accept'), ('option 2', 'Reject')], widget=forms.RadioSelect)
-
+    sendchoice = [
+        ('Myself', 'Myself'),
+        ('My_Partner', 'My Partner')
+    ]
+    partner_receiving = forms.ChoiceField(choices=sendchoice)

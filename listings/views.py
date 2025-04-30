@@ -28,27 +28,30 @@ def user_listings(request):
 def listing_details(request, pid):
 	curr = request.user
 	post = Listing.objects.get(id=pid)
-
+	
 	partner = None
-	if hasattr(curr, 'profile') and hasattr(curr.profile, 'partner'):
-		partner = curr.profile.partner
+	form = None
 
-	if request.method == 'POST':
-		form = OfferForm(request.POST, user=curr, partner=partner)
-		if form.is_valid():
-			obj = form.save(commit=False)
-			obj.u3 = curr.id
-			obj.u1 = post.user.id
-			obj.lid = post
-			if partner:
-				obj.u4 = partner.id
-			obj.save()
-	else:
-		form = OfferForm(user=curr, partner=partner)
+	if curr.is_authenticated:
+		if hasattr(curr, 'profile') and hasattr(curr.profile, 'partner'):
+			partner = curr.profile.partner
+
+		if request.method == 'POST':
+			form = OfferForm(request.POST, user=curr, partner=partner)
+			if form.is_valid():
+				obj = form.save(commit=False)
+				obj.u3 = curr.id
+				obj.u1 = post.user.id
+				obj.lid = post
+				obj.save()
+		else:
+			form = OfferForm(user=curr, partner=partner)
 
 	template = loader.get_template("listings/listingdetails.html")
-	context = {"post" : post,
-			"form" : form}
+	context = {
+		"post": post,
+		"form": form,
+	}
 	return HttpResponse(template.render(context, request))
 
 def listing_form(request):

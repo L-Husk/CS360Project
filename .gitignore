@@ -12,3 +12,12 @@ media/
 *.jpg
 *.jpeg
 *.png
+
+users/__pycache__/
+*.py[cod]
+
+listings/migrations/__pycache__/
+*.py[cod]
+
+users/migrations/__pycache__/
+*.py[cod]

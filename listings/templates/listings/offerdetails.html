@@ -138,13 +138,13 @@
             <button onclick="show()"> Counter-offer: </button>
             <form method="post" id="OfferForm" style="display:none;">
                 {% csrf_token %}
-                {% for f in form3 %}
+                {% for f in form2 %}
                 <div class="form-group">
                     {{ f.label_tag }}
                     {{ f }}
                 {% endfor %}
                 </div>
-                <button type="submit" , name="submit_postcounter" value="Submit"> Submit Offer </button>
+                <button type="submit" , name="submit_counter" value="Submit"> Submit Offer </button>
             </form>
             </div>
         {% elif curr.id == offer.u2 %}
@@ -165,13 +165,13 @@
             <button onclick="show()"> Counter-offer: </button>
             <form method="post" id="OfferForm" style="display:none;">
                 {% csrf_token %}
-                {% for f in form3 %}
+                {% for f in form2 %}
                 <div class="form-group">
                     {{ f.label_tag }}
                     {{ f }}
                 {% endfor %}
                 </div>
-                <button type="submit" , name="submit_postcounter" value="Submit"> Submit Offer </button>
+                <button type="submit" , name="submit_counter" value="Submit"> Submit Offer </button>
             </form>
         </div>
         {% endif %}

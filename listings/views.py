@@ -101,9 +101,6 @@ def offer_details(request, pid, oid):
 		if 'submit_counter' in request.POST:
 			if form2.is_valid():
 				return redirect('/users/profile')
-		if 'submit_postcounter' in request.POST:
-			if form3.is_valid():
-				return redirect('/users/profile')
 
 	template = loader.get_template("listings/offerdetails.html")
 	context = {"post": post,

@@ -24,11 +24,6 @@ class OfferForm(forms.ModelForm):
                 qs = qs | Listing.objects.filter(user=partner)
             self.fields['oid'].queryset = qs.distinct()
 
-class PosterCounterOfferForm(forms.ModelForm):
-    class Meta:
-        model = Pending
-        fields = ['oid', 'lamount', 'oamount', 'partner_receiving']
-
 class OfferResponseForm(forms.Form):
     response = forms.ChoiceField(choices=[('option 1', 'Accept'), ('option 2', 'Reject')], widget=forms.RadioSelect)
 

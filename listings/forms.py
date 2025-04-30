@@ -13,6 +13,17 @@ class OfferForm(forms.ModelForm):
         model = Pending
         fields = ['oid', 'lamount', 'oamount', 'partner_sending']
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        partner = kwargs.pop('partner', None)  
+        super().__init__(*args, **kwargs)
+
+        if user:
+            qs = Listing.objects.filter(user=user)
+            if partner:
+                qs = qs | Listing.objects.filter(user=partner)
+            self.fields['oid'].queryset = qs.distinct()
+
 class PosterCounterOfferForm(forms.ModelForm):
     class Meta:
         model = Pending

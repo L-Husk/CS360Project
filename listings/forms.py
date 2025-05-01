@@ -6,7 +6,7 @@ from .models import PartnerRequest
 class UserForm(forms.ModelForm):
     class Meta:
         model = Listing
-        fields = ['item_name', 'item_desc','amount','img']
+        fields = ['item_name', 'item_desc','amount','img','is_alive','is_chilled','is_fragile']
 
 class OfferForm(forms.ModelForm):
     class Meta:

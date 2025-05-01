@@ -4,11 +4,12 @@ from django.template import loader
 from django.db.models import Q
 from .models import Listing, Pending, Accepted
 from .forms import UserForm, OfferForm, OfferResponseForm
+from decimal import Decimal
 
 
 # Create your views here.
 def index(request):
-	latest_posts = Listing.objects.order_by("-pub_date")
+	latest_posts = Listing.objects.exclude(amount=0).order_by("-pub_date")
 	template = loader.get_template("listings/index.html")
 	context = {"latest_posts": latest_posts}
 	return HttpResponse(template.render(context, request))
@@ -49,13 +50,21 @@ def listing_details(request, pid):
 				if post.user.profile.partner:
 					obj.u2 = post.user.profile.partner.id
 				obj.save()
+				return redirect("/listings/mylistings")
 		else:
 			form = OfferForm(user=curr, partner=partner)
-
+	collected = 3
+	if post.is_alive:
+		collected += 5
+	if post.is_chilled:
+		collected += 3
+	if post.is_fragile:
+		collected += 2
 	template = loader.get_template("listings/listingdetails.html")
 	context = {
 		"post": post,
 		"form": form,
+		"collected": collected
 	}
 	return HttpResponse(template.render(context, request))
 
@@ -67,6 +76,7 @@ def listing_form(request):
 			obj.user = request.user
 			obj.save()
 			form = UserForm()
+			return redirect("/listings/mylistings")
 	return render(request, 'listings/form.html', {'form': form})
 
 def offer_details(request, pid, oid):
@@ -74,6 +84,14 @@ def offer_details(request, pid, oid):
 	post = Listing.objects.get(id=pid)
 	otheritem = Listing.objects.get(id=oid)
 	offer = Pending.objects.get(lid=pid, oid=oid)
+	postcollected = 3
+	offercollected = 3
+	postcollected = postcollected+5 if post.is_alive else postcollected
+	postcollected = postcollected+3 if post.is_chilled else postcollected
+	postcollected = postcollected+2 if post.is_fragile else postcollected
+	offercollected = offercollected+5 if otheritem.is_alive else offercollected
+	offercollected = offercollected+3 if otheritem.is_chilled else offercollected
+	offercollected = offercollected+2 if otheritem.is_fragile else offercollected
 
 	form = OfferResponseForm(request.POST or None)
 	form2 = OfferForm(request.POST or None)
@@ -88,8 +106,8 @@ def offer_details(request, pid, oid):
 				Accepted.objects.create(
 					lid=offer.lid,
 					oid=offer.oid,
-					lamount=offer.lamount,
-					oamount=offer.oamount,
+					lamount=offer.lamount*Decimal((1-(postcollected/100))),
+					oamount=offer.oamount*Decimal((1-(offercollected/100))),
 					postpartner_receiving=offer.postpartner_receiving,
 					offerpartner_receiving=offer.offerpartner_receiving,
 					u1=offer.u1,
@@ -97,7 +115,12 @@ def offer_details(request, pid, oid):
 					u3=offer.u3,
 					u4=offer.u4,
 				)
+				post.amount = offer.lid.amount - offer.lamount
+				otheritem.amount = offer.oid.amount - offer.oamount
+				post.save()
+				otheritem.save()
 				offer.delete()
+
 			# Offer rejected
 			elif request.POST.get('response') == 'option 2':
 				offer.delete()
@@ -123,7 +146,9 @@ def offer_details(request, pid, oid):
 			"otheritem": otheritem,
 			"curr": curr,
 			"form": form,
-			"form2": form2}
+			"form2": form2,
+			"offercollected": offercollected,
+			"postcollected": postcollected}
 	return HttpResponse(template.render(context, request))
 
 def accepted_details(request, pid, oid):

@@ -13,6 +13,9 @@ class Listing(models.Model):
 	img = models.ImageField(default='default.jpg', blank=True)
 	user = models.ForeignKey(User, default=1, null=True,on_delete=models.CASCADE)
 	amount = models.DecimalField(max_digits=20, decimal_places=3)
+	is_alive = models.BooleanField(default=False) #adds 5% to handling cost
+	is_chilled = models.BooleanField(default=False) #adds 3% to handling cost
+	is_fragile = models.BooleanField(default=False) #adds 2% to handling cost
 	def __str__(self):
 		return self.item_name
 	

@@ -68,6 +68,13 @@
 		of item 
 		{{ offer.lid.item_name }}
         </h5>
+		<h6>
+		{{ offer.lid.item_name }} has a {{postcollected}}% processing fee. 
+		<br>
+		{{ offer.oid.item_name }} has a {{offercollected}}% processing fee.
+		<br>
+		Totals calculated upon confirmation of trade.
+		</h6>
     </div>
     {% if offer.lastsent|divisibleby:2 %}
         {% if curr.id == offer.u3 %}
@@ -178,7 +185,5 @@
     {% endif %}
 
     {% endif %}
-
-    </div>
 
 {% endblock %}

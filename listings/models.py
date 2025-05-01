@@ -51,6 +51,8 @@ class Accepted(models.Model):
 	u3 = models.IntegerField(null=True, blank=True) #responder
 	u4 = models.IntegerField(null=True, blank=True)
 	completed_at = models.DateTimeField(auto_now_add=True)
+	verified = models.IntegerField(default=0)
+	hashkey = models.CharField(max_length=16, null=True, blank=True)
 
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)

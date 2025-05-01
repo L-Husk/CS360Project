@@ -17,6 +17,27 @@
   </div>
 
   <div class="text-center">
-    <p><strong>Trade Completed On:</strong> {{ trade.completed_at|date:"F j, Y, g:i a" }}</p>
+    <p><strong>Trade Accepted On:</strong> {{ trade.completed_at|date:"F j, Y, g:i a" }}</p>
+	{% if complete %}
+	<h3> Both Parties Have Verified the Trade</h3>
+	<p> Both parties have agreed to send in their items to the processing center. You will receive your item after both have arrived and been verified. </p>
+	{% elif ver %}
+	<h3> Awaiting Verification from the Other Party </h3>
+	<p> Both users who are sending the items need to input their hash codes in order to finalize the trade </p>
+	{% else %}
+	<h3> Awaiting Verification from Both Parties </h3>
+	<p> Both users who are sending the items need to input their hash codes in order to finalize the trade </p>
+	{% endif %}
   </div>
+  {% if hashkey %}
+  <div class="container" style="margin-top:30px; margin-left:50px; margin-bottom:100px;">
+  <h4> Your hash code: {{hashkey}} </h4>
+  <form method="post">
+	{% csrf_token %}
+	Insert hash code to verify:
+	{{ form.hashver }}
+	<button type="submit">Submit</button>
+  </form>
+  </div>
+  {% endif %}
 {% endblock %}

@@ -22,6 +22,7 @@ class OfferForm(forms.ModelForm):
             qs = Listing.objects.filter(user=user)
             if partner:
                 qs = qs | Listing.objects.filter(user=partner)
+            qs = qs.exclude(amount=0)
             self.fields['oid'].queryset = qs.distinct()
 
 class OfferResponseForm(forms.Form):
@@ -31,3 +32,6 @@ class OfferResponseForm(forms.Form):
         ('My_Partner', 'My Partner')
     ]
     partner_receiving = forms.ChoiceField(choices=sendchoice)
+    
+class HashVerificationForm(forms.Form):
+    hashver = forms.CharField(max_length=20)
